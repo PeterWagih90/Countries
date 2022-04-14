@@ -2,6 +2,7 @@ package com.cloud.countries.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.cloud.countries.di.DaggerApiComponent
 import com.cloud.countries.model.CountriesService
 import com.cloud.countries.model.Country
 import io.reactivex.Scheduler
@@ -10,14 +11,20 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.ScheduledThreadPoolExecutor
+import javax.inject.Inject
 
 class ListViewModel : ViewModel() {
     val countries = MutableLiveData<List<Country>>()
     val countryLoadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
 
-    val countriesApi= CountriesService()
+    @Inject
+    lateinit var countriesApi: CountriesService
     val disposable = CompositeDisposable()
+
+    init {
+        DaggerApiComponent.create().inject(this)
+    }
 
     fun refresh(){
         fetchCountries()
