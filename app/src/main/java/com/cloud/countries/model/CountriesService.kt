@@ -23,5 +23,16 @@ class CountriesService(){
         return api.getCountries()
     }
 
+    companion object {
+        private var apiClient: CountriesService? = null
+
+        fun getInstance(deviceUUID: String): CountriesService =
+            apiClient ?: synchronized(this) {
+                apiClient ?: CountriesService().also {
+                    apiClient = it
+                }
+            }
+    }
+
 
 }
