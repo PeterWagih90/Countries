@@ -26,7 +26,7 @@ class CountriesService(){
     companion object {
         private var apiClient: CountriesService? = null
 
-        fun getInstance(deviceUUID: String): CountriesService =
+        fun getInstance(): CountriesService =
             apiClient ?: synchronized(this) {
                 apiClient ?: CountriesService().also {
                     apiClient = it
